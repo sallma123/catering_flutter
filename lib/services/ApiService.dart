@@ -23,15 +23,18 @@ class ApiService {
     }
   }
 
-  Future<void> registerUser(RegisterRequest request) async {
+  Future<bool> registerUser(RegisterRequest request) async {
     final response = await http.post(
       Uri.parse("${baseUrl}api/auth/register"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(request.toJson()),
     );
 
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception("Échec d'inscription : ${response.statusCode}");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
     }
   }
+
 }
