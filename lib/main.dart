@@ -1,14 +1,24 @@
-import 'package:app_catering/providers/AuthProvider.dart';
-import 'package:app_catering/screens/auth/RegisterScreen.dart';
-import 'package:app_catering/screens/commandes/CommandesScreen.dart';
-import 'package:app_catering/screens/auth/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart'; // ⬅️ important
+import 'package:app_catering/providers/AuthProvider.dart';
+import 'package:app_catering/providers/CommandeProvider.dart';
+import 'package:app_catering/screens/auth/LoginScreen.dart';
+import 'package:app_catering/screens/auth/RegisterScreen.dart';
+import 'package:app_catering/screens/commandes/CommandesScreen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialise les données locales (fr, en, etc.)
+  await initializeDateFormatting('fr', null);
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CommandeProvider()),
+      ],
       child: const CateringApp(),
     ),
   );
@@ -37,7 +47,7 @@ class CateringApp extends StatelessWidget {
             );
           },
           onNavigateToForgotPassword: () {
-            // Ici tu peux naviguer vers ton écran de mot de passe oublié
+            // écran de mot de passe oublié
           },
         ),
       ),
