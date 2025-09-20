@@ -5,7 +5,6 @@ import '../models/LoginRequest.dart';
 import '../models/LoginResponse.dart';
 import '../services/ApiService.dart';
 
-
 enum LoginState { idle, loading, success, error }
 
 class AuthProvider with ChangeNotifier {
@@ -32,7 +31,7 @@ class AuthProvider with ChangeNotifier {
         _user = response;
         _state = LoginState.success;
 
-        // sauvegarder email dans SharedPreferences
+        // ✅ Sauvegarder email dans SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('email', _user!.email);
       } else {
@@ -47,9 +46,21 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// ✅ Réinitialiser l’état
   void resetState() {
     _state = LoginState.idle;
     _errorMessage = '';
+    notifyListeners();
+  }
+
+  /// ✅ Déconnexion : vider l’utilisateur + SharedPreferences
+  Future<void> logout() async {
+    _user = null;
+    _state = LoginState.idle;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // supprime toutes les données (email, token, etc.)
+
     notifyListeners();
   }
 }
