@@ -22,7 +22,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CommandeProvider()),
         ChangeNotifierProvider(
-          create: (_) => CatalogueProvider(api: ApiService()), // 🔹 Ajout du provider Catalogue
+          create: (_) => CatalogueProvider(api: ApiService()),
         ),
       ],
       child: const CateringApp(),
@@ -37,7 +37,30 @@ class CateringApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Catering App',
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFFFFC107), // 🌟 gold comme couleur principale
+          secondary: Color(0xFFFFC107),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFFC107),
+            foregroundColor: Colors.black,
+            minimumSize: const Size.fromHeight(48),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: const Color(0xFFFFC107),
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFFFFC107),
+          foregroundColor: Colors.black,
+        ),
+      ),
       home: Builder(
         builder: (context) => LoginScreen(
           onLoginSuccess: () {
@@ -58,7 +81,6 @@ class CateringApp extends StatelessWidget {
         ),
       ),
       routes: {
-        // 🔹 Ajout de la route vers CatalogueScreen
         "/catalogue": (_) => const CatalogueScreen(),
       },
     );
