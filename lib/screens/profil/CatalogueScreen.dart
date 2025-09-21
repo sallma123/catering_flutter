@@ -66,29 +66,39 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
             const SizedBox(height: 16),
 
             // Nom catégorie (Outlined)
-            TextField(
-              controller: nomCategorieCtrl,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: "Nom de la catégorie",
-                labelStyle: TextStyle(color: Colors.white),
-                border: OutlineInputBorder(),
-              ),
+// Ligne pour nom + ordre
+            Row(
+              children: [
+                Expanded(
+                  flex: 3, // plus large pour le nom
+                  child: TextField(
+                    controller: nomCategorieCtrl,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      labelText: "Nom de la catégorie",
+                      labelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12), // espacement entre les champs
+                Expanded(
+                  flex: 1, // plus petit pour l'ordre
+                  child: TextField(
+                    controller: ordreCategorieCtrl,
+                    style: const TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: "Ordre",
+                      labelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
 
-            // Ordre catégorie
-            TextField(
-              controller: ordreCategorieCtrl,
-              style: const TextStyle(color: Colors.white),
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: "Ordre",
-                labelStyle: TextStyle(color: Colors.white),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 8),
 
             // Bouton ajouter catégorie
             SizedBox(
