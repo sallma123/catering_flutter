@@ -207,7 +207,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
+                              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber, foregroundColor: Colors.black),
                               onPressed: () => _showAjouterProduitDialog(cat),
                               child: const Text("Ajouter produit"),
                             ),

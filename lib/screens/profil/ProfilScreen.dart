@@ -65,7 +65,7 @@ class ProfilScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Colors.black,
                     minimumSize: const Size.fromHeight(50),
                   ),
                   child: const Text(
