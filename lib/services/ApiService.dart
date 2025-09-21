@@ -3,13 +3,15 @@ import 'package:http/http.dart' as http;
 
 import '../data/dto/CommandeDTO.dart';
 import '../models/Avance.dart';
+import '../models/CategorieProduit.dart';
 import '../models/Commande.dart';
 import '../models/LoginRequest.dart';
 import '../models/LoginResponse.dart';
+import '../models/ProduitDefini.dart';
 import '../models/RegisterRequest.dart';
 
 class ApiService {
-  static const String baseUrl = "http://192.168.1.6:8080/"; // comme ton Retrofit
+  static const String baseUrl = "http://192.168.1.5:8080/"; // comme ton Retrofit
 
   // ✅ Centralisation des headers
   final Map<String, String> headers = {
@@ -176,4 +178,162 @@ class ApiService {
       throw Exception("Erreur suppression avance: ${response.statusCode}");
     }
   }
+  // 🔹 CATALOGUE
+  // -----------------------------
+
+  /// Charger le catalogue par type de commande (ex: "MARIAGE")
+  Future<List<CategorieProduit>> getCatalogue(String typeCommande) async {
+    final response = await http.get(
+      Uri.parse("${baseUrl}api/catalogue/$typeCommande"),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => CategorieProduit.fromJson(json)).toList();
+    } else {
+      throw Exception("Erreur chargement catalogue: ${response.statusCode}");
+    }
+  }
+
+  /// Créer une catégorie
+  Future<CategorieProduit?> creerCategorie(CategorieProduit categorie) async {
+    final response = await http.post(
+      Uri.parse("${baseUrl}api/catalogue"),
+      headers: headers,
+      body: jsonEncode(categorie.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return CategorieProduit.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  /// Modifier une catégorie
+  Future<CategorieProduit?> modifierCategorie(int id, CategorieProduit categorie) async {
+    final response = await http.put(
+      Uri.parse("${baseUrl}api/catalogue/$id"),
+      headers: headers,
+      body: jsonEncode(categorie.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return CategorieProduit.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  /// Supprimer une catégorie
+  Future<void> supprimerCategorie(int id) async {
+    final response = await http.delete(
+      Uri.parse("${baseUrl}api/catalogue/$id"),
+      headers: headers,
+    );
+    if (response.statusCode != 200) {
+      throw Exception("Erreur suppression catégorie: ${response.statusCode}");
+    }
+  }
+
+  // -----------------------------
+  // 🔹 PRODUITS DÉFINIS
+  // -----------------------------
+
+  /// Créer un produit dans une catégorie
+  Future<ProduitDefini?> creerProduit(int categorieId, ProduitDefini produit) async {
+    final response = await http.post(
+      Uri.parse("${baseUrl}api/catalogue/$categorieId/produits"),
+      headers: headers,
+      body: jsonEncode(produit.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return ProduitDefini.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  /// Modifier un produit
+  Future<ProduitDefini?> modifierProduit(int id, ProduitDefini produit) async {
+    final response = await http.put(
+      Uri.parse("${baseUrl}api/catalogue/produits/$id"),
+      headers: headers,
+      body: jsonEncode(produit.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return ProduitDefini.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  /// Supprimer un produit
+  Future<void> supprimerProduit(int id) async {
+    final response = await http.delete(
+      Uri.parse("${baseUrl}api/catalogue/produits/$id"),
+      headers: headers,
+    );
+    if (response.statusCode != 200) {
+      throw Exception("Erreur suppression produit: ${response.statusCode}");
+    }
+  }
+
+  // -----------------------------
+  // 🔹 REFERENCE VALUES
+  /*
+
+  Future<List<ReferenceValue>> getReferenceValuesByCategory(String category) async {
+    final response = await http.get(
+      Uri.parse("${baseUrl}api/references/$category"),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => ReferenceValue.fromJson(json)).toList();
+    } else {
+      throw Exception("Erreur chargement références: ${response.statusCode}");
+    }
+  }
+
+  Future<List<ReferenceValue>> getAllReferenceValues() async {
+    final response = await http.get(
+      Uri.parse("${baseUrl}api/references"),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => ReferenceValue.fromJson(json)).toList();
+    } else {
+      throw Exception("Erreur chargement références globales: ${response.statusCode}");
+    }
+  }
+
+  Future<ReferenceValue?> addReferenceValue(ReferenceValue value) async {
+    final response = await http.post(
+      Uri.parse("${baseUrl}api/references"),
+      headers: headers,
+      body: jsonEncode(value.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return ReferenceValue.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  Future<ReferenceValue?> updateReferenceValue(int id, ReferenceValue value) async {
+    final response = await http.put(
+      Uri.parse("${baseUrl}api/references/$id"),
+      headers: headers,
+      body: jsonEncode(value.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return ReferenceValue.fromJson(jsonDecode(response.body));
+    }
+    return null;
+  }
+
+  Future<void> deleteReferenceValue(int id) async {
+    final response = await http.delete(
+      Uri.parse("${baseUrl}api/references/$id"),
+      headers: headers,
+    );
+    if (response.statusCode != 200) {
+      throw Exception("Erreur suppression référence: ${response.statusCode}");
+    }
+  }*/
 }
