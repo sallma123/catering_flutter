@@ -53,16 +53,6 @@ class _CalendrierScreenState extends State<CalendrierScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: const Color(0xFF1E1E1E),
-        child: const Center(
-          child: Text(
-            "Navigation",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -74,8 +64,7 @@ class _CalendrierScreenState extends State<CalendrierScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon:
-                      const Icon(Icons.chevron_left, color: Colors.white),
+                      icon: const Icon(Icons.chevron_left, color: Colors.white),
                       onPressed: () {
                         setState(() {
                           currentMonth = DateTime(
@@ -91,8 +80,7 @@ class _CalendrierScreenState extends State<CalendrierScreen> {
                           fontSize: 16),
                     ),
                     IconButton(
-                      icon:
-                      const Icon(Icons.chevron_right, color: Colors.white),
+                      icon: const Icon(Icons.chevron_right, color: Colors.white),
                       onPressed: () {
                         setState(() {
                           currentMonth = DateTime(
@@ -126,8 +114,7 @@ class _CalendrierScreenState extends State<CalendrierScreen> {
                       children: List.generate(7, (dayIndex) {
                         int boxIndex = week * 7 + dayIndex;
                         int dayNumber = boxIndex - startOffset + 1;
-                        if (boxIndex < startOffset ||
-                            dayNumber > daysInMonth) {
+                        if (boxIndex < startOffset || dayNumber > daysInMonth) {
                           return const Expanded(child: SizedBox());
                         } else {
                           final date = DateTime(
@@ -181,7 +168,7 @@ class _CalendrierScreenState extends State<CalendrierScreen> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  const SizedBox(height: 2), // espacement ajusté
                                   if (commandesPourLeJour > 0 && !isSelected)
                                     Wrap(
                                       alignment: WrapAlignment.center,
@@ -229,8 +216,7 @@ class _CalendrierScreenState extends State<CalendrierScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 itemCount: commandesDuJour.length,
                 shrinkWrap: true, // prend juste l’espace nécessaire
-                physics:
-                const NeverScrollableScrollPhysics(), // désactive scroll interne
+                physics: const NeverScrollableScrollPhysics(), // désactive scroll interne
                 separatorBuilder: (_, __) => const SizedBox(height: 6),
                 itemBuilder: (_, index) =>
                     CommandeCard(commandesDuJour[index]),
