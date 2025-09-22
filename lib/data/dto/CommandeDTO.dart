@@ -78,4 +78,5 @@ class CommandeDTO {
       'heureInvitation': heureInvitation,
     };
   }
+
 }

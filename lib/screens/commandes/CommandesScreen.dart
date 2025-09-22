@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../models/Commande.dart';
 import '../../providers/CommandeProvider.dart';
+import 'CreerCommandeScreen.dart';
 
 class CommandesScreen extends StatefulWidget {
   const CommandesScreen({super.key});
@@ -275,8 +276,36 @@ class _CommandesScreenState extends State<CommandesScreen> {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    onPressed: () {
-                      // TODO: navigation Flutter
+                    onPressed: () async {
+                      // Navigation vers CreerCommandeScreen
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CreerCommandeScreen(
+                            typeClient: label,
+                          ),
+                        ),
+                      );
+
+                      // 🔹 result est un CommandeDTO retourné après création
+                      if (result != null) {
+                        // Par exemple, on peut l'ajouter au provider
+                        Provider.of<CommandeProvider>(context, listen: false).creerCommande(
+                          result,
+                          onSuccess: (id) {
+                            // 🔹 Après création, tu peux récupérer l'id et éventuellement faire un setState ou notifier
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Commande créée"))
+                            );
+                          },
+                          onError: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Erreur lors de la création"))
+                            );
+                          },
+                        );
+
+                      }
                     },
                     child: Text(
                       label.toUpperCase(),
@@ -290,7 +319,8 @@ class _CommandesScreenState extends State<CommandesScreen> {
                 ),
               ))
                   .toList(),
-            ),
+            )
+            ,
           )
         ],
       ),
